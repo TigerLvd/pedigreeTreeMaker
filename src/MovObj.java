@@ -64,16 +64,21 @@ public class MovObj extends JFrame {
         }
     }
 
-    public static void show_rec(Men m, int level) {}
-
-    public static void drawTree(int level) {
-        if (level == 0) {
-            System.out.println("Пусто");
-        } else {
-            //int x = level % 2 == 0 ? level / 2 : level / 2 + 1;
-            float x = level / 2;
-            for (int i = 0; i < level; i++) {
-                System.out.println("x:" + ((x-i)  * width) + "y:" + ((i+1) * hight));
+    public void drawTree(Men m) {
+        m.fixLevels();
+        m.getChilrenWidths(m);
+        JLabel labelName = new JLabel(m.getName());
+        add(labelName);
+        Dimension size = labelName.getPreferredSize();
+        labelName.setBounds(m.getWidth() / 2 - size.width / 2, 0, size.width, size.height);
+        if(m.hasChild()) {
+            int cnt = 0;
+            for (Men ch : m.getChildren()) {
+                JLabel labelCh = new JLabel(ch.getName());
+                add(labelCh);
+                Dimension sizeCh = labelCh.getPreferredSize();
+                labelCh.setBounds(m.getWidth() / 2 - size.width / 2 + (cnt > 0 ? m.getChildren().get(cnt - 1).getWidth() : 0),
+                        (m.getLevel() - ch.getLevel()) * 25, sizeCh.width, sizeCh.height);
             }
         }
     }
@@ -95,7 +100,10 @@ public class MovObj extends JFrame {
             }
         }
         m.fixLevels();
-        app.show(m);
+        //app.show(m);
+
+        app.setVisible(true);
+        //app.drawTree(m);
 
         /*System.out.println("lelvel of " + m.getName() + " is " + m.countLevels());
         for (Men ch : m.getChildren().getMembers()) {

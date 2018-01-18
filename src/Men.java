@@ -176,7 +176,7 @@ public class Men {
         }
     }
 
-    private Integer getChilrenWidths(Men m) {
+    public Integer getChilrenWidths(Men m) {
         Integer sum = 0;
         if(m.hasChild()) {
             for (Men ch : m.getChildren()) {
