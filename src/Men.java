@@ -28,21 +28,6 @@ public class Men {
         width = null;
     }
 
-    /*public Men (Integer id, String name, Integer level, Men father, Men mother, Date birsday, Date deadday,
-                String shortInfo, Generation children, Boolean sex, Integer width) {
-        this.id = id;
-        this.name = name;
-        this.level = level;
-        this.father = father;
-        this.mother = mother;
-        this.birsday = birsday;
-        this.deadday = deadday;
-        this.shortInfo = shortInfo;
-        this.children = children;
-        this.sex = sex;
-        this.width = width;
-    }*/
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -183,7 +168,18 @@ public class Men {
         }
     }
 
-    private void setWidths() {
-
+    private Integer getChilrenWidths(Men m) {
+        Integer sum = 0;
+        if(m.hasChild()) {
+            for (Men ch : m.getChildren()) {
+                sum += getChilrenWidths(ch);
+            }
+            if(m.getChildren().size() > 1) {
+                sum += (m.getChildren().size() - 1) * Const.betweenItemWidth;
+            }
+        } else {
+            sum = Const.itemWidth;
+        }
+        return sum;
     }
 }
