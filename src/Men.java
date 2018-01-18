@@ -136,6 +136,14 @@ public class Men {
         }
     }
 
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
     public int countLevels () {
         int res;
         if(this.name == null || this.name.equals("")) {
@@ -180,6 +188,7 @@ public class Men {
         } else {
             sum = Const.itemWidth;
         }
+        m.setWidth(sum);
         return sum;
     }
 }
