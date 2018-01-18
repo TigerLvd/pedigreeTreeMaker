@@ -49,15 +49,15 @@ public class MovObj extends JFrame {
             labelName.setBounds((size.width + 15) * m.countLevels() / 2, 0, size.width, size.height);
             if(m.hasChild()) {
                 int cnt = 0;
-                for (Men ch : m.getChildren().getMembers()) {
+                for (Men ch : m.getChildren()) {
                     JLabel labelCh = new JLabel(ch.getName());
                     add(labelCh);
                     Dimension sizeCh = labelCh.getPreferredSize();
                     labelCh.setText(labelCh.getText()
-                            + " x:" + ((sizeCh.width + 15) * ch.getLevel()  / m.getChildren().getMembers().size() * cnt++)
+                            + " x:" + ((sizeCh.width + 15) * ch.getLevel()  / m.getChildren().size() * cnt++)
                             + " y:" + ((m.getLevel() - ch.getLevel()) * 25));
                     sizeCh = labelCh.getPreferredSize();
-                    labelCh.setBounds((sizeCh.width + 15) * ch.getLevel()  / m.getChildren().getMembers().size() * cnt++,
+                    labelCh.setBounds((sizeCh.width + 15) * ch.getLevel()  / m.getChildren().size() * cnt++,
                             (m.getLevel() - ch.getLevel()) * 25, sizeCh.width, sizeCh.height);
                 }
             }
@@ -84,10 +84,10 @@ public class MovObj extends JFrame {
         Men m = new Men("Батя");
         m.addChild("Сынко",true);
         m.addChild("Лапочка-дочка",true);
-        Men doch = m.getChildren().getMembers().get(1);
+        Men doch = m.getChildren().get(1);
         for(int i = 0; i < 10; i++) {
             doch.addChild("внучёчек_"+i,true);
-            Men cnyk = doch.getChildren().getMembers().get(i);
+            Men cnyk = doch.getChildren().get(i);
             int k = (int) (Math.round(Math.random() * 100) % 3);
             for(int j = 0; j < k; j++) {
                 cnyk.addChild("правнучёчек_"+j,true);

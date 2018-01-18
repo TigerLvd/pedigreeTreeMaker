@@ -10,7 +10,7 @@ public class Men {
     private Date birsday;
     private Date deadday;
     private String shortInfo;
-    private Generation children;
+    private ArrayList<Men> children;
     private Boolean sex; // пол: 1 - men, 0 - women
     private Integer width; //ширина потомков
 
@@ -28,7 +28,7 @@ public class Men {
         width = null;
     }
 
-    public Men (Integer id, String name, Integer level, Men father, Men mother, Date birsday, Date deadday,
+    /*public Men (Integer id, String name, Integer level, Men father, Men mother, Date birsday, Date deadday,
                 String shortInfo, Generation children, Boolean sex, Integer width) {
         this.id = id;
         this.name = name;
@@ -41,7 +41,7 @@ public class Men {
         this.children = children;
         this.sex = sex;
         this.width = width;
-    }
+    }*/
 
     public void setId(Integer id) {
         this.id = id;
@@ -107,11 +107,11 @@ public class Men {
         return shortInfo;
     }
 
-    public void setChildren(Generation children) {
+    public void setChildren(ArrayList<Men> children) {
         this.children = children;
     }
 
-    public Generation getChildren() {
+    public ArrayList<Men> getChildren() {
         return children;
     }
 
@@ -123,21 +123,28 @@ public class Men {
         return sex;
     }
 
-    public void addChild (String name, Boolean father) {
-        Men child = new Men(name);
-        if(this.children == null) {
-            this.children = new Generation();
-        }
-        this.children.addMember(child);
+    public void addChild(Men m, boolean father) {
         if(father) {
-            child.setFather(this);
+            m.setFather(m);
         } else {
-            child.setMother(this);
+            m.setMother(m);
+        }
+        if(this.getChildren() == null) {
+            ArrayList<Men> newChildren = new ArrayList<Men>();
+            newChildren.add(m);
+            this.setChildren(newChildren);
+        } else {
+            this.getChildren().add(m);
         }
     }
 
+    public void addChild (String name, Boolean father) {
+        Men child = new Men(name);
+        this.addChild(child, father);
+    }
+
     public Boolean hasChild() {
-        if(children == null || (children.getMembers().isEmpty())) {
+        if(children == null || children.isEmpty()) {
             return false;
         } else {
             return true;
@@ -148,11 +155,11 @@ public class Men {
         int res;
         if(this.name == null || this.name.equals("")) {
             res = 0;
-        } else if(this.getChildren() == null || this.getChildren().getMembers() == null || this.getChildren().getMembers().isEmpty()) {
+        } else if(this.hasChild()) {
             res = 1;
         } else {
             int max = 0;
-            for (Men ch : this.getChildren().getMembers()) {
+            for (Men ch : this.getChildren()) {
                 if(max < ch.countLevels()) {
                     max = ch.countLevels();
                 }
@@ -169,8 +176,8 @@ public class Men {
 
     private void fixLevels_rec(Men m, int lev) {
         m.setLevel(lev);
-        if(m.getChildren() != null && m.getChildren().getMembers() != null && !m.getChildren().getMembers().isEmpty()) {
-            for (Men ch : m.getChildren().getMembers()) {
+        if(m.hasChild()) {
+            for (Men ch : m.getChildren()) {
                 fixLevels_rec(ch, lev-1);
             }
         }
@@ -178,15 +185,5 @@ public class Men {
 
     private void setWidths() {
 
-    }
-
-    public void addChild(Men m) {
-        if(this.getChildren() == null) {
-            Generation g = new Generation();
-            g.setMembers(new ArrayList<Men>());
-            this.setChildren(g);
-            this.getChildren().setFather(m);
-        }
-        this.getChildren().getMembers().add(m);
     }
 }
