@@ -88,23 +88,20 @@ public class MovObj extends JFrame {
         add(labelName);
         Dimension size = labelName.getPreferredSize();
         labelName.setBounds(m.getWidth() / 2 - size.width / 2, 0, size.width, size.height);
-        System.out.println("LOG:" + m.getName() + ", x:" + (m.getWidth() / 2 - size.width / 2) + ", y: 0" + ", width:" + m.getWidth());
+        //System.out.println("LOG:" + m.getName() + ", x:" + (m.getWidth() / 2 - size.width / 2) + ", y: 0" + ", width:" + m.getWidth());
         itemsTreePrint(m, m.getLevel());
     }
 
     private void itemsTreePrint(Men m, int flevel) {
         if(m.hasChild()) {
-            int cnt = 0;
             for (Men ch : m.getChildren()) {
                 JLabel labelCh = new JLabel(ch.getName());
                 add(labelCh);
                 Dimension sizeCh = labelCh.getPreferredSize();
                 labelCh.setBounds(ch.getLeft()+ ch.getWidth() / 2 - sizeCh.width / 2,
-                        (m.getLevel() - ch.getLevel()) * Const.itemHeight, sizeCh.width, sizeCh.height);
-                System.out.println("LOG:" + ch.getName() + ", x:" + (ch.getWidth() / 2 - sizeCh.width / 2 + ch.getLeft())
-                        + ", y: " + ((flevel - ch.getLevel()) * Const.itemHeight) + ", width:" + ch.getWidth());
+                        (flevel - ch.getLevel()) * Const.itemHeight, sizeCh.width, sizeCh.height);
+                //System.out.println("LOG:" + ch.getName() + ", x:" + (ch.getWidth() / 2 - sizeCh.width / 2 + ch.getLeft()) + ", y: " + ((flevel - ch.getLevel()) * Const.itemHeight) + ", width:" + ch.getWidth());
                 itemsTreePrint(ch, flevel);
-                cnt++;
             }
         }
     }
