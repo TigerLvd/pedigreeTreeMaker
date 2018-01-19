@@ -13,6 +13,7 @@ public class Men {
     private ArrayList<Men> children;
     private Boolean sex; // пол: 1 - men, 0 - women
     private Integer width; //ширина потомков
+    private Integer left; //ширина потомков
 
     public Men (String name) {
         id = null;
@@ -26,6 +27,7 @@ public class Men {
         children = null;
         sex = null;
         width = null;
+        left = null;
     }
 
     public void setId(Integer id) {
@@ -176,19 +178,11 @@ public class Men {
         }
     }
 
-    public Integer getChilrenWidths(Men m) {
-        Integer sum = 0;
-        if(m.hasChild()) {
-            for (Men ch : m.getChildren()) {
-                sum += getChilrenWidths(ch);
-            }
-            if(m.getChildren().size() > 1) {
-                sum += (m.getChildren().size() - 1) * Const.betweenItemWidth;
-            }
-        } else {
-            sum = Const.itemWidth;
-        }
-        m.setWidth(sum);
-        return sum;
+    public void setLeft(Integer left) {
+        this.left = left;
+    }
+
+    public Integer getLeft() {
+        return left;
     }
 }

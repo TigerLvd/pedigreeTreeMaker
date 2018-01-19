@@ -64,21 +64,61 @@ public class MovObj extends JFrame {
         }
     }
 
+    public Integer getChilrenWidths(Men m) {
+        Integer sum = 0;
+        if(m.hasChild()) {
+            for (Men ch : m.getChildren()) {
+                sum += getChilrenWidths(ch);
+            }
+            if(m.getChildren().size() > 1) {
+                sum += (m.getChildren().size() - 1) * Const.betweenItemWidth;
+            }
+        } else {
+            sum = Const.itemWidth;
+        }
+        m.setWidth(sum);
+        return sum;
+    }
+
     public void drawTree(Men m) {
         m.fixLevels();
-        m.getChilrenWidths(m);
+        getChilrenWidths(m);
+        setChilrenLeft(m);
         JLabel labelName = new JLabel(m.getName());
         add(labelName);
         Dimension size = labelName.getPreferredSize();
         labelName.setBounds(m.getWidth() / 2 - size.width / 2, 0, size.width, size.height);
+        System.out.println("LOG:" + m.getName() + ", x:" + (m.getWidth() / 2 - size.width / 2) + ", y: 0" + ", width:" + m.getWidth());
+        itemsTreePrint(m, m.getLevel());
+    }
+
+    private void itemsTreePrint(Men m, int flevel) {
         if(m.hasChild()) {
             int cnt = 0;
             for (Men ch : m.getChildren()) {
                 JLabel labelCh = new JLabel(ch.getName());
                 add(labelCh);
                 Dimension sizeCh = labelCh.getPreferredSize();
-                labelCh.setBounds(m.getWidth() / 2 - size.width / 2 + (cnt > 0 ? m.getChildren().get(cnt - 1).getWidth() : 0),
-                        (m.getLevel() - ch.getLevel()) * 25, sizeCh.width, sizeCh.height);
+                labelCh.setBounds(ch.getLeft()+ ch.getWidth() / 2 - sizeCh.width / 2,
+                        (m.getLevel() - ch.getLevel()) * Const.itemHeight, sizeCh.width, sizeCh.height);
+                System.out.println("LOG:" + ch.getName() + ", x:" + (ch.getWidth() / 2 - sizeCh.width / 2 + ch.getLeft())
+                        + ", y: " + ((flevel - ch.getLevel()) * Const.itemHeight) + ", width:" + ch.getWidth());
+                itemsTreePrint(ch, flevel);
+                cnt++;
+            }
+        }
+    }
+
+    public void setChilrenLeft(Men m) {
+        if(m.getFather() == null && m.getMother() == null) {
+            m.setLeft(0);
+        }
+        if (m.hasChild()) {
+            Integer sum = m.getLeft();
+            for (Men ch : m.getChildren()) {
+                ch.setLeft(sum);
+                sum += ch.getWidth() + Const.betweenItemWidth;
+                setChilrenLeft(ch);
             }
         }
     }
@@ -103,7 +143,7 @@ public class MovObj extends JFrame {
         //app.show(m);
 
         app.setVisible(true);
-        //app.drawTree(m);
+        app.drawTree(m);
 
         /*System.out.println("lelvel of " + m.getName() + " is " + m.countLevels());
         for (Men ch : m.getChildren().getMembers()) {
